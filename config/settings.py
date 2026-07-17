@@ -27,10 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = "accounts.User"
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -49,6 +54,32 @@ INSTALLED_APPS = [
     "dashboard",
     "audit",
 ]
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+
+    "ROTATE_REFRESH_TOKENS": True,
+
+    "BLACKLIST_AFTER_ROTATION": True,
+
+    "UPDATE_LAST_LOGIN": True,
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
